@@ -1,4 +1,5 @@
 class Basket
+
   attr_accessor :basket
   def initialize
     @basket = { "FR1" => 0,
@@ -12,7 +13,26 @@ class Basket
   end
 
   def basket_total
-    ((@basket["FR1"] * 311) + (@basket["SR1"] * 500) + (@basket["CF1"] * 1123)) / 100.00
+
+    def yoghurt_price
+      if @basket["FR1"] > 1 && @basket["FR1"] % 2 == 0
+        (@basket["FR1"] / 2) * 311
+      elsif @basket["FR1"] > 1
+        ((@basket["FR1"] - 1)/2 * 311) + 311
+      elsif @basket["FR1"] <= 1
+        @basket["FR1"] * 311
+      end
+    end
+
+    def strawberry_price
+      if @basket["SR1"] >= 3
+        @basket["SR1"] * 450
+      else @basket["SR1"] * 500
+      end
+    end
+
+
+    (yoghurt_price + strawberry_price + (@basket["CF1"] * 1123)) / 100.00
   end
 
   def add(x)
