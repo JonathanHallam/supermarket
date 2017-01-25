@@ -25,6 +25,41 @@ describe Basket do
     expect(x.complete_purchase).to eq('That cost £8.11 and your basket is now empty')
   end
 
+  it "Applies the two for one offer on two or more youghurts" do
+    x = start_checkout
+    x.add("FR1")
+    x.add("FR1")
+    x.add("FR1")
+    expect(x.basket_total).to eq(6.22)
+  end
+
+  it "Applies the 50p discount to strawberries if you buy 3 or more" do
+    x = start_checkout
+    x.add("SR1")
+    x.add("SR1")
+    x.add("SR1")
+    x.add("SR1")
+    expect(x.basket_total).to eq(18.00)
+  end
+
+  it "doesn't if you only buy 2" do
+    x = start_checkout
+    x.add("SR1")
+    x.add("SR1")
+    expect(x.basket_total).to eq(10.00)
+  end
+
+  it "does the above two things in combination" do
+    x = start_checkout
+    x.add("FR1")
+    x.add("SR1")
+    x.add("FR1")
+    x.add("SR1")
+    x.add("SR1")
+    expect(x.basket_total).to eq(16.61)
+
+  end
+
 
 
 end
