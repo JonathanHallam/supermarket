@@ -60,6 +60,41 @@ describe Basket do
 
   end
 
+  it "gets the name of a staff member from the database when given their staff number." do
+    x = start_employee
+    expect(x.check_name(10001)).to eq("Jon Hallam")
+  end
 
+  it "gets the length of employment from the database when given their staff number." do
+    x = start_employee
+    expect(x.check_employment_time(10001)).to eq(12)
+  end
+
+  it "recognises when a staff member is eligable for discount" do
+    x = start_employee
+    expect(x.staff_discount(10001)).to eq(true)
+  end
+
+  it "gives the discount to a deserving employee" do
+    x = start_employee
+    x.add("FR1")
+    x.add("SR1")
+    x.add("FR1")
+    x.add("SR1")
+    x.add("SR1")
+    expect(x.basket_total(10001)).to eq(14.95)
+
+  end
+
+  it "doesn't for one who hasn't been there long enough" do
+    x = start_employee
+    x.add("FR1")
+    x.add("SR1")
+    x.add("FR1")
+    x.add("SR1")
+    x.add("SR1")
+    expect(x.basket_total(10002)).to eq(16.61)
+
+  end
 
 end
