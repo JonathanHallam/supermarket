@@ -1,3 +1,5 @@
+require './users'
+
 class Basket
 
   attr_accessor :basket
@@ -12,27 +14,29 @@ class Basket
     return "#{@basket} costs: £#{basket_total}"
   end
 
+
+
   def basket_total
 
-    def yoghurt_price
+    def tea_price
       if @basket["FR1"] > 1 && @basket["FR1"] % 2 == 0
-        (@basket["FR1"] / 2) * 311
+        (@basket["FR1"] / 2) * check_price("FR1")
       elsif @basket["FR1"] > 1
-        ((@basket["FR1"] - 1)/2 * 311) + 311
+        ((@basket["FR1"] - 1)/2 * check_price("FR1")) + check_price("FR1")
       elsif @basket["FR1"] <= 1
-        @basket["FR1"] * 311
+        @basket["FR1"] * check_price("FR1")
       end
     end
 
     def strawberry_price
       if @basket["SR1"] >= 3
-        @basket["SR1"] * 450
-      else @basket["SR1"] * 500
+        @basket["SR1"] * (check_price("SR1") - 50)
+      else @basket["SR1"] * check_price("SR1")
       end
     end
 
 
-    (yoghurt_price + strawberry_price + (@basket["CF1"] * 1123)) / 100.00
+    (tea_price + strawberry_price + (@basket["CF1"] * check_price("CF1"))) / 100.00
   end
 
   def add(x)
@@ -56,5 +60,27 @@ class Basket
 end
 
 def start_checkout
-  Basket.new
+  General.new
+end
+
+def start_employee
+  Employee.new
+end
+
+def start_manager
+  Manager.new
+end
+
+def start_loyal
+  Loyal_Customer.new
+end
+
+def check_price(code)
+  require 'sqlite3'
+  begin
+    db = SQLite3::Database.open "supermarket.db"
+    a = db.prepare "SELECT price FROM items WHERE code='#{code}'"
+    (a.execute.next.join "\s").to_i
+  end
+
 end
