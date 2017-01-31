@@ -57,7 +57,6 @@ describe Person do
     x.add("SR1")
     x.add("SR1")
     expect(x.basket_total).to eq(16.61)
-
   end
 
   it "gets the name of a staff member from the database when given their staff number." do
@@ -83,7 +82,6 @@ describe Person do
     x.add("SR1")
     x.add("SR1")
     expect(x.basket_total(10001)).to eq(14.95)
-
   end
 
   it "doesn't for one who hasn't been there long enough" do
@@ -94,7 +92,6 @@ describe Person do
     x.add("SR1")
     x.add("SR1")
     expect(x.basket_total(10002)).to eq(16.61)
-
   end
 
   it "returns true if a loyalty code exists" do
@@ -102,15 +99,14 @@ describe Person do
     expect(x.check_loyalty(1234)).to eq(true)
   end
 
-  it "takes 5% off an item at the checkout for a loyal customer when given a valid card number and code of item that needs discountsing" do
-    x = start_loyal
-    x.add("FR1")
-    x.add("SR1")
+ it "takes 5% off an item at the checkout for a loyal customer when given a valid card number and code of item that needs discountsing" do
+   x = start_loyal
+   x.add("FR1")
+   x.add("SR1")
     x.add("FR1")
     x.add("SR1")
     x.add("SR1")
     expect(x.basket_total(1234, "SR1")).to eq(16.36)
-
   end
 
   it "updates prices when using a manager code" do
