@@ -1,6 +1,6 @@
 require 'sqlite3'
-
 class Person
+
   attr_accessor :basket
   def initialize
     @basket = { "FR1" => 0,
@@ -51,9 +51,18 @@ class Person
   end
 
   def check_price(code)
-    db = SQLite3::Database.open "supermarket1.db"
-    a = db.prepare "SELECT price FROM items WHERE code='#{code}'"
-    (a.execute.next.join "\s").to_i
+    begin
+      db = SQLite3::Database.open "thisworks.db"
+      a = db.prepare "SELECT price FROM items WHERE code='#{code}'"
+      (a.execute.next.join "\s").to_i
+    rescue SQLite3::Exception => e
+      puts "Exception occurred"
+      puts e
+
+    ensure
+      a.close
+      db.close if db
+    end
   end
 
 end
@@ -70,11 +79,19 @@ class Employee < Person
     return "#{@basket} costs: £#{basket_total}"
   end
 
-
   def check_name(code)
-    db = SQLite3::Database.open "supermarket1.db"
-    a = db.prepare "SELECT name FROM employees WHERE staff_number ='#{code}'"
-    (a.execute.next.join "\s")
+    begin
+      db = SQLite3::Database.open "thisworks.db"
+      a = db.prepare "SELECT name FROM employees WHERE staff_number ='#{code}'"
+      (a.execute.next.join "\s")
+    rescue SQLite3::Exception => e
+      puts "Exception occurred"
+      puts e
+
+    ensure
+      a.close
+      db.close if db
+    end
   end
 
   def greeting(name)
@@ -82,9 +99,18 @@ class Employee < Person
   end
 
   def check_employment_time(code)
-    db = SQLite3::Database.open "supermarket1.db"
-    a = db.prepare "SELECT employed_months FROM employees WHERE staff_number ='#{code}'"
-    (a.execute.next.join "\s").to_i
+    begin
+      db = SQLite3::Database.open "thisworks.db"
+      a = db.prepare "SELECT employed_months FROM employees WHERE staff_number ='#{code}'"
+      (a.execute.next.join "\s").to_i
+    rescue SQLite3::Exception => e
+      puts "Exception occurred"
+      puts e
+
+    ensure
+      a.close
+      db.close if db
+    end
 
   end
 
@@ -105,8 +131,15 @@ end
 
 class Manager < Employee
   def update_price(code, new_price)
-      db = SQLite3::Database.open "supermarket1.db"
+    begin
+      db = SQLite3::Database.open "thisworks.db"
       db.execute "UPDATE items SET price='#{new_price}' WHERE code='#{code}'"
+    rescue SQLite3::Exception => e
+      puts "Exception occurred"
+      puts e
+    ensure
+      db.close if db
+    end
   end
 
 end
@@ -114,8 +147,16 @@ end
 class Loyal_Customer < General
 
   def check_loyalty(number)
-    db = SQLite3::Database.open "supermarket1.db"
-    a = db.execute("SELECT '#{number}' FROM loyalty WHERE number = '#{number}'")
+    begin
+      db = SQLite3::Database.open "thisworks.db"
+      a = db.execute("SELECT '#{number}' FROM loyalty WHERE number = '#{number}'")
+    rescue SQLite3::Exception => e
+      puts "Exception occurred"
+      puts e
+
+    ensure
+      db.close if db
+    end
     return true if a != [] ; false
   end
 
