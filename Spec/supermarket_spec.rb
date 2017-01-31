@@ -1,6 +1,6 @@
 require 'basket'
 
-describe Basket do
+describe Person do
   it "Opens a new basket, can add an item to it and calulate price" do
     x = start_checkout
     x.add("FR1")
@@ -95,6 +95,34 @@ describe Basket do
     x.add("SR1")
     expect(x.basket_total(10002)).to eq(16.61)
 
+  end
+
+  it "returns true if a loyalty code exists" do
+    x = start_loyal
+    expect(x.check_loyalty(1234)).to eq(true)
+  end
+
+  it "takes 5% off an item at the checkout for a loyal customer when given a valid card number and code of item that needs discountsing" do
+    x = start_loyal
+    x.add("FR1")
+    x.add("SR1")
+    x.add("FR1")
+    x.add("SR1")
+    x.add("SR1")
+    expect(x.basket_total(1234, "SR1")).to eq(16.36)
+
+  end
+
+  it "updates prices when using a manager code" do
+    x = start_manager
+    x.update_price("FR1", 310)
+    expect(x.check_price("FR1")).to eq(310)
+  end
+
+  it "updates prices when using a manager code" do
+    x = start_manager
+    x.update_price("FR1", 311)
+    expect(x.check_price("FR1")).to eq(311)
   end
 
 end

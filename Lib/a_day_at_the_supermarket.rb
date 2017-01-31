@@ -24,24 +24,23 @@ elsif sn_response == "N"
     puts "Enter your loyalty card number now"
     loyalty_number = $stdin.gets.chomp
 
-#   Check Loyalty number
-
     x = start_loyal
 
   elsif lc_response == "N"
     x = start_checkout
+    puts x.greeting
   end
 end
 
 
-puts "What would you like to do?"
-puts "add, remove, running total or checkout?"
-print ">"
-choice = $stdin.gets.chomp.downcase
-if choice == "add"
-  puts "add what? FR1 SR1 CF1"
+  puts "What would you like to do?"
+  puts "add, remove, running total or checkout?"
   print ">"
-  product = $stdin.gets.chomp.upcase
-  x.add(product)
-  x.show_basket
+  choice = $stdin.gets.chomp.downcase
+  if choice == "add"
+    puts "add what? FR1 SR1 CF1"
+    print ">"
+    product = $stdin.gets.chomp.upcase
+    x.add(product)
+
 end
